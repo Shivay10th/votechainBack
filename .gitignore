@@ -1,3 +1,5 @@
 winner.json
 node_modules
 scrapdata.js
+.env
+.gitignore
