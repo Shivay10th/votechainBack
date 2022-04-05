@@ -1,5 +1,6 @@
 /** @format */
-const app = require('express')();
+const express = require('express');
+const app = express();
 require('dotenv').config();
 
 const candidateRoutes = require('./routes/candidates');
@@ -10,6 +11,8 @@ const { parse } = require('dotenv');
 mongoose.connect(process.env.LOCALDATABASE || process.env.DATABASE, () => {
 	console.log('connected to DB');
 });
+
+app.use(express.json());
 
 app.use('/', candidateRoutes);
 

@@ -42,3 +42,26 @@ exports.upCandidates22 = async (req, res) => {
 			});
 		});
 };
+
+exports.findUpCandidates22 = (req, res) => {
+	const { Constituency } = req.body;
+
+	// To find matching pattern
+	const regxp = new RegExp(Constituency.toUpperCase());
+
+	Candidate.find({
+		Constituency: {
+			$regex: regxp,
+		},
+	})
+		.then((data) => {
+			return res.json({
+				data,
+			});
+		})
+		.catch((e) => {
+			return res.json({
+				error: e.message,
+			});
+		});
+};
