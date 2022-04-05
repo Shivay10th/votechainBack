@@ -11,7 +11,7 @@ exports.upCandidates22 = async (req, res) => {
 
 	const results = {};
 
-	const total = await Candidate.countDocuments({}).exec();
+	const total = await Candidate.estimatedDocumentCount({}).exec();
 
 	if (endIndex < total) {
 		results.next = {
