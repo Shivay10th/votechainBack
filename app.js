@@ -19,9 +19,9 @@ app.use('/', candidateRoutes);
 app.get('*', (req, res) => {
 	return res.json({
 		msg: {
-			Up: 'GET /up/2022',
+			Up: 'GET /up/all/2022',
 		},
 	});
 });
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT, () => console.log('Server started'));
