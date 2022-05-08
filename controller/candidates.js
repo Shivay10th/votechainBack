@@ -1,6 +1,37 @@
 /** @format */
 const Candidate = require('../models/candidate');
-const fs = require('fs');
+
+const { default: axios } = require('axios');
+const res = require('express/lib/response');
+const { default: mongoose } = require('mongoose');
+
+exports.getCandidateById = (req, res, next, id) => {
+	Candidate.findById(id)
+		.populate('reviews')
+		.exec(async (error, data) => {
+			if (error || !data) {
+				return res.status(400).json({
+					error: 'File is not here',
+					e: error,
+				});
+			}
+
+			req.Candidate = data;
+			next();
+		});
+};
+
+exports.getCandidate = async (req, res) => {
+	const candidate = req.Candidate.toObject();
+	let newsArticles = [];
+
+	const newsAPI = `https://newsapi.org/v2/everything?q="${candidate.name}"OR"${candidate.Constituency}"&apiKey=${process.env.NEWSAPI}`;
+
+	const result = await axios.get(newsAPI);
+	newsArticles = [...result.data.articles];
+	candidate.newsArticles = newsArticles;
+	return res.json(candidate);
+};
 
 exports.upCandidates22 = async (req, res) => {
 	const page = parseInt(req.query.page);
@@ -11,7 +42,7 @@ exports.upCandidates22 = async (req, res) => {
 
 	const results = {};
 
-	const total = await Candidate.estimatedDocumentCount({}).exec();
+	const total = await Candidate.find({}).lean().count();
 
 	if (endIndex < total) {
 		results.next = {
@@ -29,6 +60,8 @@ exports.upCandidates22 = async (req, res) => {
 	results.totalCandidates = total;
 
 	Candidate.find({}, '-_id -__v')
+
+		.populate('reviews')
 		.limit(limit)
 		.skip(startIndex)
 		.exec()
@@ -37,6 +70,7 @@ exports.upCandidates22 = async (req, res) => {
 			return res.json(results);
 		})
 		.catch((e) => {
+			console.log(e);
 			return res.json({
 				error: 'Something is Missing',
 			});
