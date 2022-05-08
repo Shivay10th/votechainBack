@@ -4,18 +4,23 @@ const app = express();
 require('dotenv').config();
 
 const candidateRoutes = require('./routes/candidates');
+const reviewRoutes = require('./routes/review');
+const authRoutes = require('./routes/auth');
+const districtRoutes = require('./routes/district');
 
 const mongoose = require('mongoose');
-const { parse } = require('dotenv');
+const candidate = require('./models/candidate');
 
-mongoose.connect(process.env.LOCALDATABASE || process.env.DATABASE, () => {
+mongoose.connect(process.env.LOCALDATABASE, () => {
 	console.log('connected to DB');
 });
 
 app.use(express.json());
 
 app.use('/', candidateRoutes);
-
+app.use('/', reviewRoutes);
+app.use('/', authRoutes);
+app.use('/', districtRoutes);
 app.get('*', (req, res) => {
 	return res.json({
 		msg: {
