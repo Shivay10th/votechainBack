@@ -1,5 +1,7 @@
 winner.json
 node_modules
-scrapdata.js
+scrapData
 .env
 .gitignore
+district.json
+winner.json
