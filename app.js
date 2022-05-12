@@ -1,6 +1,7 @@
 /** @format */
 const express = require('express');
 const app = express();
+const cors = require('cors');
 require('dotenv').config();
 
 const candidateRoutes = require('./routes/candidates');
@@ -16,6 +17,7 @@ mongoose.connect(process.env.LOCALDATABASE, () => {
 });
 
 app.use(express.json());
+app.use(cors());
 
 app.use('/', candidateRoutes);
 app.use('/', reviewRoutes);
