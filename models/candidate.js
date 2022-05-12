@@ -8,10 +8,13 @@ const CandidateSchema = new mongoose.Schema({
 	party: String,
 	criminalCases: Number,
 	education: String,
-	reviews: [{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Review',
-	}],
+
+	reviews: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Review',
+		},
+	],
 	total_assets: String,
 	year: String,
 });
