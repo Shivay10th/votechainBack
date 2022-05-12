@@ -6,38 +6,34 @@ const { v4: uuid4 } = require('uuid');
 
 const crypto = require('crypto');
 
-const UserSchema = new mongoose.Schema(
-	{
-		name: String,
-		reviews: [
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Review',
-			},
-		],
-		email: {
-			type: String,
-			trim: true,
-			unique: true,
-			required: true,
+const UserSchema = new mongoose.Schema({
+	name: String,
+	reviews: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Review',
 		},
-
-		safe_password: {
-			type: String,
-			required: true,
-		},
-
-		salt: String,
-
-		role: {
-			type: Number,
-			default: 0,
-		},
+	],
+	email: {
+		type: String,
+		trim: true,
+		unique: true,
+		required: true,
 	},
-	{
-		timestamps: true,
+
+	safe_password: {
+		type: String,
+		required: true,
 	},
-);
+	pancard: { type: String },
+
+	salt: String,
+
+	role: {
+		type: Number,
+		default: 0,
+	},
+});
 
 UserSchema.virtual('password')
 	.get(function () {
