@@ -5,7 +5,7 @@ const user = require('../models/user');
 
 exports.CreateReview = (req, res) => {
 	const Candidate = req.Candidate;
-	Review.create(req.body, async (err, review) => {
+	Review.create({ comment: req.body.comment }, async (err, review) => {
 		if (err)
 			return res.json({
 				error: 'err in saving comment',
@@ -13,9 +13,12 @@ exports.CreateReview = (req, res) => {
 		else {
 			Candidate.reviews.push(review);
 			Candidate.save();
+
 			req.profile.reviews.push(review);
 			await req.profile.save();
 			review.author = req.profile._id;
+			review.ratings = req.body.ratings;
+			review.markModified('ratings');
 			await review.save();
 			return res.json(Candidate);
 		}
