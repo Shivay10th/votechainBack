@@ -4,7 +4,8 @@ const District = require('../models/district');
 
 exports.getDistrictAndConstituencyByName = (req, res) => {
 	const { name } = req.params;
-	const regxp = new RegExp(name.toUpperCase());
+	// \\b is for word ending with space or end of line
+	const regxp = new RegExp('^' + name.toUpperCase() + '\\b');
 	District.find(
 		{
 			name: {
@@ -14,7 +15,6 @@ exports.getDistrictAndConstituencyByName = (req, res) => {
 		'-_id -__v',
 	)
 		.then((data) => {
-			data._id = undefined;
 			return res.json(data);
 		})
 		.catch((e) => {
