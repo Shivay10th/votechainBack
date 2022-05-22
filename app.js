@@ -19,10 +19,10 @@ mongoose.connect(process.env.LOCALDATABASE, () => {
 app.use(express.json());
 app.use(cors());
 
-app.use('/', candidateRoutes);
-app.use('/', reviewRoutes);
-app.use('/', authRoutes);
-app.use('/', districtRoutes);
+app.use('/api/', candidateRoutes);
+app.use('/api/', reviewRoutes);
+app.use('/api/', authRoutes);
+app.use('/api/', districtRoutes);
 app.get('*', (req, res) => {
 	return res.json({
 		msg: {
