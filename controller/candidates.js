@@ -77,18 +77,19 @@ exports.upCandidates22 = async (req, res) => {
 		});
 };
 
-exports.findUpCandidates22 = (req, res) => {
-	const { Constituency } = req.body;
+exports.findUpCandidateByConstituency = (req, res) => {
+	// console.log(req.params);
+	const { Constituency } = req.params;
+	// console.log(Constituency === 'AGRA CANTT. (SC)');
 
-	// To find matching pattern
-	const regxp = new RegExp(Constituency.toUpperCase());
-
+	// // To find matching pattern
+	// const regxp = new RegExp(Constituency.toUpperCase());
+	// console.log(regxp);
 	Candidate.find({
-		Constituency: {
-			$regex: regxp,
-		},
+		Constituency: Constituency,
 	})
 		.then((data) => {
+			console.log(data);
 			return res.json({
 				data,
 			});

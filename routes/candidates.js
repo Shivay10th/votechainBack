@@ -1,9 +1,9 @@
 /** @format */
 const {
 	upCandidates22,
-	findUpCandidates22,
 	getCandidateById,
 	getCandidate,
+	findUpCandidateByConstituency,
 } = require('../controller/candidates');
 const candidate = require('../models/candidate');
 const router = require('express').Router();
@@ -16,7 +16,10 @@ const router = require('express').Router();
 router.param('candidateId', getCandidateById);
 
 router.get('/up/all/2022', upCandidates22);
-router.get('/up/candidate/2022', findUpCandidates22);
+router.get(
+	'/up/candidate/2022/constituency/:Constituency',
+	findUpCandidateByConstituency,
+);
 router.get('/up/candidate/2022/:candidateId', getCandidate);
 
 module.exports = router;

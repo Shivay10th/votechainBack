@@ -17,7 +17,7 @@ exports.signUp = (req, res) => {
 		if (err) {
 			console.log(err);
 			return res.status(400).json({
-				error: 'data is not saved in DB',
+				error: err.message.split(':')[2],
 			});
 		}
 		return res.json({ name: user.name, email: user.email });

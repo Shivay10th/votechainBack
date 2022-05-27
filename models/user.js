@@ -25,7 +25,18 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	pancard: { type: String },
+	pancard: {
+		type: String,
+		unique: true,
+		minlength: 10,
+		maxlength: 10,
+		validate: {
+			validator: function (v) {
+				return /([A-Z]){5}([0-9]){4}([A-Z]){1}$/.test(v);
+			},
+			message: () => `Invalid Pan card Number`,
+		},
+	},
 
 	salt: String,
 
