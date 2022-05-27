@@ -4,6 +4,7 @@ const Candidate = require('../models/candidate');
 const { default: axios } = require('axios');
 const res = require('express/lib/response');
 const { default: mongoose } = require('mongoose');
+const candidate = require('../models/candidate');
 
 exports.getCandidateById = (req, res, next, id) => {
 	Candidate.findById(id)
@@ -88,11 +89,16 @@ exports.findUpCandidateByConstituency = (req, res) => {
 	Candidate.find({
 		Constituency: Constituency,
 	})
-		.then((data) => {
-			console.log(data);
-			return res.json({
-				data,
-			});
+		.then(async (data) => {
+			const Cd = data[0].toObject();
+			let newsArticles = [];
+
+			const newsAPI = `https://newsapi.org/v2/everything?q="${Cd.name}"OR"${Cd.Constituency}"&apiKey=${process.env.NEWSAPI}`;
+
+			const result = await axios.get(newsAPI);
+			newsArticles = [...result.data.articles];
+			Cd.newsArticles = newsArticles;
+			return res.json(Cd);
 		})
 		.catch((e) => {
 			return res.json({

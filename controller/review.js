@@ -5,24 +5,30 @@ const user = require('../models/user');
 
 exports.CreateReview = (req, res) => {
 	const Candidate = req.Candidate;
-	Review.create({ comment: req.body.comment }, async (err, review) => {
-		if (err)
-			return res.json({
-				error: 'err in saving comment',
-			});
-		else {
-			Candidate.reviews.push(review);
-			Candidate.save();
+	Review.create(
+		{ comment: req.body.comment, rating: req.body.rating },
+		async (err, review) => {
+			if (err)
+				return res.json({
+					error: 'err in saving comment',
+				});
+			else {
+				Candidate.reviews.push(review);
+				console.log(review);
+				console.log(Candidate.ratings);
+				Candidate.ratings = review.rating;
+				Candidate.save();
 
-			req.profile.reviews.push(review);
-			await req.profile.save();
-			review.author = req.profile._id;
-			review.ratings = req.body.ratings;
-			review.markModified('ratings');
-			await review.save();
-			return res.json(Candidate);
-		}
-	});
+				req.profile.reviews.push(review);
+				await req.profile.save();
+				review.author = req.profile._id;
+				review.ratings = req.body.ratings;
+				review.markModified('ratings');
+				await review.save();
+				return res.json(Candidate);
+			}
+		},
+	);
 };
 
 exports.UpdateReview = (req, res) => {
