@@ -5,6 +5,7 @@ const user = require('../models/user');
 
 exports.CreateReview = (req, res) => {
 	const Candidate = req.Candidate;
+	console.log(req.body);
 	Review.create(
 		{ comment: req.body.comment, rating: req.body.rating },
 		async (err, review) => {

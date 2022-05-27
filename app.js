@@ -11,12 +11,16 @@ const districtRoutes = require('./routes/district');
 
 const mongoose = require('mongoose');
 const candidate = require('./models/candidate');
+const cookieParser = require('cookie-parser');
 
 mongoose.connect(process.env.LOCALDATABASE, () => {
 	console.log('connected to DB');
 });
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
 app.use(cors());
 
 app.use('/api/', candidateRoutes);

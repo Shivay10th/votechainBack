@@ -89,8 +89,11 @@ exports.findUpCandidateByConstituency = (req, res) => {
 	Candidate.find({
 		Constituency: Constituency,
 	})
+		.populate('reviews')
+		.exec()
 		.then(async (data) => {
 			const Cd = data[0].toObject();
+			const ratings = data[0].ratings;
 			let newsArticles = [];
 
 			const newsAPI = `https://newsapi.org/v2/everything?q="${Cd.name}"OR"${Cd.Constituency}"&apiKey=${process.env.NEWSAPI}`;
@@ -98,6 +101,7 @@ exports.findUpCandidateByConstituency = (req, res) => {
 			const result = await axios.get(newsAPI);
 			newsArticles = [...result.data.articles];
 			Cd.newsArticles = newsArticles;
+			Cd.ratings = ratings;
 			return res.json(Cd);
 		})
 		.catch((e) => {
