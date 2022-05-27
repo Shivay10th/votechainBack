@@ -1,7 +1,27 @@
 /** @format */
 
+const res = require('express/lib/response');
 const Review = require('../models/review');
 const user = require('../models/user');
+
+exports.getAllReview = () => {
+	Review.find({})
+		.then((data) => {
+			if (data.err) {
+				return res.status(400).json({
+					error: 'error occured while fetching all review',
+				});
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			console.log(err.message);
+			return res.status(400).json({
+				error: 'error occured while fetching all review',
+			});
+		});
+};
 
 exports.CreateReview = (req, res) => {
 	const Candidate = req.Candidate;
@@ -24,6 +44,7 @@ exports.CreateReview = (req, res) => {
 				await req.profile.save();
 				review.author = req.profile._id;
 				review.ratings = req.body.ratings;
+				review.candidate = Candidate._id;
 				review.markModified('ratings');
 				await review.save();
 				return res.json(Candidate);
@@ -58,7 +79,7 @@ exports.DeleteReview = (req, res) => {
 	const userID = req.profile._id;
 	Review.findById(reviewID)
 		.then(async (review) => {
-			if (review.author.equals(userID)) {
+			if (review.author.equals(userID) || req.profile.role === 1) {
 				const doc = await review.remove();
 				req.profile.reviews = req.profile.reviews.filter(
 					(review) => review.toString() !== reviewID,

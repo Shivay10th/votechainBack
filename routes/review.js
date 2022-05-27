@@ -1,17 +1,20 @@
 /** @format */
 const router = require('express').Router();
 
-const { isLoggedIn, isAuthenticated } = require('../controller/auth');
+const { isLoggedIn, isAuthenticated, isAdmin } = require('../controller/auth');
 const { getCandidateById } = require('../controller/candidates');
 const {
 	CreateReview,
 	UpdateReview,
 	DeleteReview,
+	getAllReview,
 } = require('../controller/review');
 const { getUserById } = require('../controller/user');
 
 router.param('candidateId', getCandidateById);
 router.param('userId', getUserById);
+
+router.get('/allreview', isLoggedIn, isAuthenticated, isAdmin, getAllReview);
 
 router.post(
 	'/candidate/:candidateId/review/create/:userId',

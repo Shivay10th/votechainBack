@@ -2,7 +2,15 @@
 
 const router = require('express').Router();
 
-const { logOut, signUp, signIn, isLoggedIn } = require('../controller/auth');
+const {
+	logOut,
+	signUp,
+	signIn,
+	isLoggedIn,
+	isAuthenticated,
+	isAdmin,
+	suspendUser,
+} = require('../controller/auth');
 const { check, validationResult } = require('express-validator');
 
 router.post(
@@ -27,6 +35,14 @@ router.post(
 			.withMessage('Password is required'),
 	],
 	signIn,
+);
+
+router.delete(
+	'/suspend/user/:userId',
+	isLoggedIn,
+	isAuthenticated,
+	isAdmin,
+	suspendUser,
 );
 
 router.get('/logout', logOut);

@@ -1,4 +1,5 @@
 /** @format */
+const { isLoggedIn, isAuthenticated, isAdmin } = require('../controller/auth');
 const {
 	upCandidates22,
 	getCandidateById,
@@ -15,7 +16,13 @@ const router = require('express').Router();
 
 router.param('candidateId', getCandidateById);
 
-router.get('/up/all/2022', upCandidates22);
+router.get(
+	'/up/all/2022',
+	isLoggedIn,
+	isAuthenticated,
+	isAdmin,
+	upCandidates22,
+);
 router.get(
 	'/up/candidate/2022/constituency/:Constituency',
 	findUpCandidateByConstituency,

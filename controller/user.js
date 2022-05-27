@@ -43,3 +43,12 @@ exports.updateUser = (req, res) => {
 		},
 	);
 };
+
+exports.suspendUser = (req, res) => {
+	const userId = req.params.userId;
+	User.findById(userId)
+		.then(async (doc) => {
+			await doc.remove();
+		})
+		.catch((err) => console.log);
+};
