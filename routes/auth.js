@@ -9,9 +9,10 @@ const {
 	isLoggedIn,
 	isAuthenticated,
 	isAdmin,
-	suspendUser,
 } = require('../controller/auth');
 const { check, validationResult } = require('express-validator');
+
+const { suspendUser } = require('../controller/user.js');
 
 router.post(
 	'/signup',
@@ -41,6 +42,7 @@ router.delete(
 	'/suspend/user/:userId',
 	isLoggedIn,
 	isAuthenticated,
+
 	isAdmin,
 	suspendUser,
 );

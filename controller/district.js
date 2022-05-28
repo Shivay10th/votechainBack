@@ -24,3 +24,16 @@ exports.getDistrictAndConstituencyByName = (req, res) => {
 			});
 		});
 };
+
+exports.getalldistrict = (req, res) => {
+	District.find({})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((e) => {
+			console.log(e.message);
+			return res.json({
+				error: 'Error occure while finding the District',
+			});
+		});
+};

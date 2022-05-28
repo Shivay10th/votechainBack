@@ -49,6 +49,7 @@ exports.suspendUser = (req, res) => {
 	User.findById(userId)
 		.then(async (doc) => {
 			await doc.remove();
+			return { msg: 'user suspended' };
 		})
 		.catch((err) => console.log);
 };
