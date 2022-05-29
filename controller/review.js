@@ -22,6 +22,9 @@ exports.getAllReview = () => {
 			});
 		});
 };
+exports.getAllReviewOfUser = (req, res) => {
+	return res.json(req.profile.reviews);
+};
 
 exports.CreateReview = (req, res) => {
 	const Candidate = req.Candidate;

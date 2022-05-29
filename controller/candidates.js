@@ -57,6 +57,7 @@ exports.upCandidates22 = async (req, res) => {
 			limit: limit,
 		};
 	}
+	console.log('In all');
 
 	results.totalCandidates = total;
 
