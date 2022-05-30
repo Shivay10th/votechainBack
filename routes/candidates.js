@@ -5,6 +5,7 @@ const {
 	getCandidateById,
 	getCandidate,
 	findUpCandidateByConstituency,
+	updateCandidate,
 } = require('../controller/candidates');
 const { getUserById } = require('../controller/user');
 const candidate = require('../models/candidate');
@@ -17,6 +18,14 @@ const router = require('express').Router();
 
 router.param('candidateId', getCandidateById);
 router.param('userId', getUserById);
+
+router.put(
+	'/admin/:userId/candidate/:candidateId',
+	isLoggedIn,
+	isAuthenticated,
+	isAdmin,
+	updateCandidate,
+);
 
 router.get(
 	'/admin/:userId/up/all/2022',

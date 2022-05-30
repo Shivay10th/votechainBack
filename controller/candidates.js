@@ -6,6 +6,22 @@ const res = require('express/lib/response');
 const { default: mongoose } = require('mongoose');
 const candidate = require('../models/candidate');
 
+exports.updateCandidate = (req, res) => {
+	const candidateID = req.params.candidateId;
+	Candidate.findByIdAndUpdate(candidateID, req.body)
+		.then((doc) => {
+			console.log(doc);
+			return res.json({
+				msg: 'Candidate updated.',
+			});
+		})
+		.catch((err) => {
+			return res.json({
+				err: 'something went wrong while updating candidate',
+			});
+		});
+};
+
 exports.getCandidateById = (req, res, next, id) => {
 	Candidate.findById(id)
 		.populate('reviews')
