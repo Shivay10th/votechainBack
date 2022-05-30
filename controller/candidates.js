@@ -24,6 +24,7 @@ exports.getCandidateById = (req, res, next, id) => {
 
 exports.getCandidate = async (req, res) => {
 	const candidate = req.Candidate.toObject();
+	const ratings = req.Candidate.ratings;
 	let newsArticles = [];
 
 	const newsAPI = `https://newsapi.org/v2/everything?q="${candidate.name}"OR"${candidate.Constituency}"&apiKey=${process.env.NEWSAPI}`;
@@ -31,6 +32,7 @@ exports.getCandidate = async (req, res) => {
 	const result = await axios.get(newsAPI);
 	newsArticles = [...result.data.articles];
 	candidate.newsArticles = newsArticles;
+	candidate.ratings = ratings;
 	return res.json(candidate);
 };
 

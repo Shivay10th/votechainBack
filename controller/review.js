@@ -1,12 +1,15 @@
 /** @format */
 
-const res = require('express/lib/response');
 const Review = require('../models/review');
-const user = require('../models/user');
 
-exports.getAllReview = () => {
+exports.getAllReview = (req, res) => {
+	console.log('in');
 	Review.find({})
+		// .populate('candidate')
+		.populate('author')
+		.exec()
 		.then((data) => {
+			console.log(data);
 			if (data.err) {
 				return res.status(400).json({
 					error: 'error occured while fetching all review',
@@ -93,7 +96,7 @@ exports.DeleteReview = (req, res) => {
 					message: 'Review Deleted Successfully.',
 				});
 			} else {
-				return res.json({
+				return res.status(402).json({
 					error: 'Not authorize to delete this review.',
 				});
 			}

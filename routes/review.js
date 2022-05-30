@@ -15,7 +15,13 @@ const { getUserById } = require('../controller/user');
 router.param('candidateId', getCandidateById);
 router.param('userId', getUserById);
 
-router.get('/allreview', isLoggedIn, isAuthenticated, isAdmin, getAllReview);
+router.get(
+	'/admin/:userId/allreview',
+	isLoggedIn,
+	isAuthenticated,
+	isAdmin,
+	getAllReview,
+);
 router.get(
 	'/allreview/:userId',
 	isLoggedIn,

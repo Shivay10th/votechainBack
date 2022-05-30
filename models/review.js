@@ -11,7 +11,7 @@ const ReviewSchema = new mongoose.Schema(
 		},
 		candidate: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Candidate',
+			ref: 'Candidates',
 		},
 		comment: {
 			type: String,
