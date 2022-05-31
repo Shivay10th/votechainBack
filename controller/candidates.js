@@ -79,7 +79,7 @@ exports.upCandidates22 = async (req, res) => {
 
 	results.totalCandidates = total;
 
-	Candidate.find({}, '-_id -__v')
+	Candidate.find({}, '-__v')
 
 		.populate('reviews')
 		.limit(limit)
