@@ -35,6 +35,7 @@ const CandidateSchema = new mongoose.Schema(
 					total += value;
 					sum += value * parseInt(key);
 				}
+				console.log(items);
 				return Math.round(sum / total);
 			},
 			set: function (r) {
@@ -46,7 +47,10 @@ const CandidateSchema = new mongoose.Schema(
 					let prev = parseInt(
 						this.get('ratings', null, { getters: false })[r],
 					);
-					this.get('ratings', null, { getters: false })[r] = 1 + prev;
+					const ans = (this.get('ratings', null, { getters: false })[
+						r
+					] = 1 + prev);
+					console.log(ans, prev);
 					return this.get('ratings', null, { getters: false });
 				}
 			},

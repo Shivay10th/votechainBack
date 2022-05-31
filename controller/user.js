@@ -2,6 +2,8 @@
 
 const User = require('../models/user');
 
+exports.get;
+
 exports.getUserById = (req, res, next, id) => {
 	User.findById(id)
 		.populate('reviews')
