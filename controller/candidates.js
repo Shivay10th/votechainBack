@@ -8,17 +8,30 @@ const candidate = require('../models/candidate');
 
 exports.updateCandidate = (req, res) => {
 	const candidateID = req.params.candidateId;
-	Candidate.findByIdAndUpdate(candidateID, req.body)
+	console.log(req.body);
+	const { name, Constituency, party, education, criminalCases } = req.body;
+	Candidate.findById(candidateID)
 		.then((doc) => {
-			console.log(doc);
-			return res.json({
-				msg: 'Candidate updated.',
-			});
+			doc.name = name;
+			doc.Constituency = Constituency;
+			doc.party = party;
+			doc.education = education;
+			doc.criminalCases = criminalCases;
+			doc.save()
+				.then((data) => {
+					console.log(data);
+					return res.json(data);
+				})
+				.catch((err) => {
+					return res.json({
+						error: 'error ocurred while updating candidate ',
+					});
+				});
 		})
 		.catch((err) => {
-			return res.json({
-				err: 'something went wrong while updating candidate',
-			});
+			return {
+				error: "can't find candidate for updating",
+			};
 		});
 };
 
@@ -79,9 +92,7 @@ exports.upCandidates22 = async (req, res) => {
 
 	results.totalCandidates = total;
 
-	Candidate.find({}, '-__v')
-
-		.populate('reviews')
+	Candidate.find({}, '-__v -reviews')
 		.limit(limit)
 		.skip(startIndex)
 		.exec()
